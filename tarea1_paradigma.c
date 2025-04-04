@@ -6,6 +6,8 @@
 #define MAX_LINE 1024
 #define MAX_ORDERS 1000
 #define MAX_FIELD_LENGTH 200 // Ajustado para pizza_ingredients
+#define MAX_INGREDIENTS 100 // Maxima cantidad de ingredientes unicos, Para funcion ims
+#define MAX_CATEGORIES 20 //Para funcion hp
 
 typedef struct {
     char pizza_id[20];
@@ -202,20 +204,6 @@ void apo() { //REQUIERE QUE EL ULTIMO ORDER_ID SEA EL NUMERO TOTAL DE ORDENES
     printf("Promedio de pizzas por orden: %.2f\n", (total_pizzas / order_id_numerico));
 }
 
-// Función para calcular el promedio de pizzas por día
-/* void apd() {
-    if (order_count == 0) {
-        printf("No hay órdenes para calcular el promedio.\n");
-        return;
-    }
-    float total_pizzas = 0;
-    for (int i = 0; i < order_count; i++) {
-        total_pizzas += orders[i].quantity;
-    }
-    printf("order_count: %d", order_count);
-    printf("Promedio de pizzas por día: %.2f\n", total_pizzas / order_count);
-} */
-
 void apd() { //Esta funcion mira si entre dos fechas adyacentes hay diferencia, la registra como un uno y recorre todo el csv, en necesario que el csv este en orden cronologico
     int diferencias = 0;
 
@@ -238,13 +226,79 @@ void apd() { //Esta funcion mira si entre dos fechas adyacentes hay diferencia, 
     printf("Entonces el promedio de pizzas por dia es: %.2f ", total_pizzas/diferencias); //No se como %.2f es el especificador de formato correcto, si no es un d y no un f xd, pero funciona
 }
 
-void ims (){
+void hp() {
+    int category_counts[MAX_CATEGORIES] = {0};
+    char category_names[MAX_CATEGORIES][20] = {0};
+    int category_count = 0;
 
+    for (int i = 0; i < order_count; i++) {
+        int found = 0;
+        for (int j = 0; j < category_count; j++) {
+            if (strcmp(orders[i].pizza_category, category_names[j]) == 0) {
+                category_counts[j] += orders[i].quantity;
+                found = 1;
+                break;
+            }
+        }
+        if (!found && category_count < MAX_CATEGORIES) {
+            strcpy(category_names[category_count], orders[i].pizza_category);
+            category_counts[category_count] = orders[i].quantity;
+            category_count++;
+        }
+    }
+
+    for (int i = 0; i < category_count; i++) {
+        printf("Categoría: %s, Cantidad: %d\n", category_names[i], category_counts[i]);
+    }
 }
 
-void hp (){
+void ims() {
+    int ingredient_counts[MAX_INGREDIENTS] = {0};
+    char ingredient_names[MAX_INGREDIENTS][50] = {0};
+    int ingredient_count = 0;
 
+    for (int i = 0; i < order_count; i++) {
+        char ingredients[MAX_FIELD_LENGTH];
+        strcpy(ingredients, orders[i].pizza_ingredients);
+        char *ingredient = strtok(ingredients, ",");
+        while (ingredient != NULL) {
+            // Trim leading/trailing spaces
+            while (*ingredient == ' ') ingredient++;
+            char *end = ingredient + strlen(ingredient) - 1;
+            while (end > ingredient && *end == ' ') end--;
+            *(end + 1) = '\0';
 
+            int found = 0;
+            for (int j = 0; j < ingredient_count; j++) {
+                if (strcmp(ingredient, ingredient_names[j]) == 0) {
+                    ingredient_counts[j] += orders[i].quantity;
+                    found = 1;
+                    break;
+                }
+            }
+            if (!found && ingredient_count < MAX_INGREDIENTS) {
+                strcpy(ingredient_names[ingredient_count], ingredient);
+                ingredient_counts[ingredient_count] = orders[i].quantity;
+                ingredient_count++;
+            }
+            ingredient = strtok(NULL, ",");
+        }
+    }
+
+    int max_count = 0;
+    int max_index = -1;
+    for (int i = 0; i < ingredient_count; i++) {
+        if (ingredient_counts[i] > max_count) {
+            max_count = ingredient_counts[i];
+            max_index = i;
+        }
+    }
+
+    if (max_index != -1) {
+        printf("El ingrediente más vendido es: %s\nCon un total de %d ventas \n", ingredient_names[max_index], ingredient_counts[max_index]);
+    } else {
+        printf("No se encontraron ingredientes.\n");
+    }
 }
 
 int main (int argc, char *argv[]){ //Finalmente hacemos la funcion main 
@@ -283,6 +337,10 @@ int main (int argc, char *argv[]){ //Finalmente hacemos la funcion main
             apo();
         } else if (strcmp(nombreFuncion1, "apd") == 0) {
             apd();
+        } else if (strcmp(nombreFuncion1, "ims") == 0) {
+            ims();  
+        } else if (strcmp(nombreFuncion1, "hp") == 0) {
+            hp();
         } else {
             printf("Función desconocida: %s\n", nombreFuncion1);
         }
@@ -306,6 +364,10 @@ int main (int argc, char *argv[]){ //Finalmente hacemos la funcion main
             apo();
         } else if (strcmp(nombreFuncion2, "apd") == 0) {
             apd();
+        } else if (strcmp(nombreFuncion2, "ims") == 0) {
+            ims();  
+        } else if (strcmp(nombreFuncion2, "hp") == 0) {
+            hp();
         } else {
             printf("Función desconocida: %s\n", nombreFuncion2);
         }
