@@ -188,7 +188,8 @@ void dlsp() {
 }
 
 // Función para calcular el promedio de pizzas por orden
-void apo() {
+void apo() { //REQUIERE QUE EL ULTIMO ORDER_ID SEA EL NUMERO TOTAL DE ORDENES
+    int order_id_numerico = 0;
     if (order_count == 0) {
         printf("No hay órdenes para calcular el promedio.\n");
         return;
@@ -197,7 +198,8 @@ void apo() {
     for (int i = 0; i < order_count; i++) {
         total_pizzas += orders[i].quantity;
     }
-    printf("Promedio de pizzas por orden: %.2f\n", total_pizzas / order_count);
+    order_id_numerico = atoi(orders[order_count - 1].order_id);
+    printf("Promedio de pizzas por orden: %.2f\n", (total_pizzas / order_id_numerico));
 }
 
 // Función para calcular el promedio de pizzas por día
@@ -212,6 +214,15 @@ void apd() {
         total_pizzas += orders[i].quantity;
     }
     printf("Promedio de pizzas por día: %.2f\n", total_pizzas / order_count);
+}
+
+void ims (){
+
+}
+
+void hp (){
+
+
 }
 
 int main (int argc, char *argv[]){ //Finalmente hacemos la funcion main 
@@ -236,15 +247,43 @@ int main (int argc, char *argv[]){ //Finalmente hacemos la funcion main
         char *nombreFuncion1 = argv[2];
         if (strcmp(nombreFuncion1, "pms") == 0) {
             pms();
+        } else if (strcmp(nombreFuncion1, "pls") == 0) {
+            pls();
+        } else if (strcmp(nombreFuncion1, "dms") == 0) {
+            dms();
+        } else if (strcmp(nombreFuncion1, "dls") == 0) {
+            dls();
+        } else if (strcmp(nombreFuncion1, "dmsp") == 0) {
+            dmsp();
+        } else if (strcmp(nombreFuncion1, "dlsp") == 0) {
+            dlsp();
+        } else if (strcmp(nombreFuncion1, "apo") == 0) {
+            apo();
+        } else if (strcmp(nombreFuncion1, "apd") == 0) {
+            apd();
         } else {
             printf("Función desconocida: %s\n", nombreFuncion1);
         }
     }
-
+    
     if (argc > 3) {
         char *nombreFuncion2 = argv[3];
-        if (strcmp(nombreFuncion2, "pls") == 0) {
+        if (strcmp(nombreFuncion2, "pms") == 0) {
+            pms();
+        } else if (strcmp(nombreFuncion2, "pls") == 0) {
             pls();
+        } else if (strcmp(nombreFuncion2, "dms") == 0) {
+            dms();
+        } else if (strcmp(nombreFuncion2, "dls") == 0) {
+            dls();
+        } else if (strcmp(nombreFuncion2, "dmsp") == 0) {
+            dmsp();
+        } else if (strcmp(nombreFuncion2, "dlsp") == 0) {
+            dlsp();
+        } else if (strcmp(nombreFuncion2, "apo") == 0) {
+            apo();
+        } else if (strcmp(nombreFuncion2, "apd") == 0) {
+            apd();
         } else {
             printf("Función desconocida: %s\n", nombreFuncion2);
         }
