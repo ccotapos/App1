@@ -203,17 +203,39 @@ void apo() { //REQUIERE QUE EL ULTIMO ORDER_ID SEA EL NUMERO TOTAL DE ORDENES
 }
 
 // Función para calcular el promedio de pizzas por día
-void apd() {
+/* void apd() {
     if (order_count == 0) {
         printf("No hay órdenes para calcular el promedio.\n");
         return;
     }
-    // Asumimos que cada orden es de un día diferente para simplificar
     float total_pizzas = 0;
     for (int i = 0; i < order_count; i++) {
         total_pizzas += orders[i].quantity;
     }
+    printf("order_count: %d", order_count);
     printf("Promedio de pizzas por día: %.2f\n", total_pizzas / order_count);
+} */
+
+void apd() { //Esta funcion mira si entre dos fechas adyacentes hay diferencia, la registra como un uno y recorre todo el csv, en necesario que el csv este en orden cronologico
+    int diferencias = 0;
+
+    if (order_count <= 1) {
+        // No hay suficientes fechas para comparar
+        printf("No hay suficientes ordenes"); // O puedes retornar un valor de error si lo prefieres.
+    }
+
+    for (int i = 1; i < order_count; i++) {
+        if (strcmp(orders[i].order_date, orders[i - 1].order_date) != 0) {
+            diferencias++;
+        }
+    }
+
+    float total_pizzas = 0;
+    for (int i = 0; i < order_count; i++) {
+        total_pizzas += orders[i].quantity;
+    }
+    printf("Hay una cantidad total de %d dias distintos, y hay un total de %f pizzas \n", diferencias, total_pizzas);
+    printf("Entonces el promedio de pizzas por dia es: %.2f ", total_pizzas/diferencias); //No se como %.2f es el especificador de formato correcto, si no es un d y no un f xd, pero funciona
 }
 
 void ims (){
