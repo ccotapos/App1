@@ -3,7 +3,7 @@ CFLAGS = -Wall -Iinclude
 SRC_DIR = src
 OBJ_DIR = obj
 BUILD_DIR = build
-TARGET = pizza_analyzer
+TARGET = app1
 SOURCES = src/pizza_analysis.c main.c
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
