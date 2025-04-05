@@ -1,5 +1,5 @@
 #include "../includes/pizza_analysis.h"
-
+#include <string.h>
 PizzaOrder orders[MAX_ORDERS];
 int order_count = 0;
 
@@ -17,62 +17,61 @@ void load_csv(const char *filename) {
         printf("Línea leída: %s", line); // Imprime la línea leída
 
         char *token;
-        char *saveptr;
 
-        token = strtok_r(line, ",", &saveptr);
+        token = strtok(line, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_id, token, sizeof(orders[order_count].pizza_id) - 1);
         orders[order_count].pizza_id[sizeof(orders[order_count].pizza_id) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].order_id, token, sizeof(orders[order_count].order_id) - 1);
         orders[order_count].order_id[sizeof(orders[order_count].order_id) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_name_id, token, sizeof(orders[order_count].pizza_name_id) - 1);
         orders[order_count].pizza_name_id[sizeof(orders[order_count].pizza_name_id) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         orders[order_count].quantity = atoi(token);
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].order_date, token, sizeof(orders[order_count].order_date) - 1);
         orders[order_count].order_date[sizeof(orders[order_count].order_date) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].order_time, token, sizeof(orders[order_count].order_time) - 1);
         orders[order_count].order_time[sizeof(orders[order_count].order_time) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         orders[order_count].unit_price = atof(token);
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         orders[order_count].total_price = atof(token);
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_size, token, sizeof(orders[order_count].pizza_size) - 1);
         orders[order_count].pizza_size[sizeof(orders[order_count].pizza_size) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_category, token, sizeof(orders[order_count].pizza_category) - 1);
         orders[order_count].pizza_category[sizeof(orders[order_count].pizza_category) - 1] = '\0';
 
         // Manejar la cadena entre comillas dobles
-        token = strtok_r(NULL, "\"", &saveptr);
+        token = strtok(NULL, "\"");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_ingredients, token, sizeof(orders[order_count].pizza_ingredients) - 1);
         orders[order_count].pizza_ingredients[sizeof(orders[order_count].pizza_ingredients) - 1] = '\0';
 
-        token = strtok_r(NULL, ",", &saveptr);
+        token = strtok(NULL, ",");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_name, token, sizeof(orders[order_count].pizza_name) - 1);
         orders[order_count].pizza_name[sizeof(orders[order_count].pizza_name) - 1] = '\0';
