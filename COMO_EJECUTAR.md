@@ -9,7 +9,7 @@ despues de que hagan paso a paso lo del vídeo seguimos con lo importanteee
 
 Ahora sí; 
 
-1. Descarguen mi branch actualizada como carpeta.
+1. Descarguen mi branch actualizada como carpeta (o solo abran mi branch en vscode desde su pc, tmbn sirve)
 2. Despues abran la carpeta App1 de mi branch en vscode
 3. Sí o sí el documento csv que tengan y quieran probar metanlo dentro de la carpeta App1, pueden cambiar si quieren
 el csv datosdeprueva.csv que yo puse, si no el makefile no encontrará la ruta del archivo csv
@@ -32,6 +32,6 @@ Luego los parametros no tienen que ser los mismos a los que puse ahí, pueden pr
 Y debería salirles la ejecución, eso :D
 
 8. Les recomiendo por último si es que quieren volver  probar, poner en la terminal el texto make clean
-y luego volver a poner make para cuando lo quieran, así limpia el archivo del ejecutable y queda más limpia la terminal.
+y luego volver a poner make para cuando lo quieran, así limpia el archivo del ejecutable y queda más limpia la terminal para repetidas ejecuciones.
 
 Eso, confirmenme si les funciona porfa.

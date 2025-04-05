@@ -41,5 +41,5 @@ int main(int argc, char *argv[]) {
             printf("Metrica desconocida: %s\n", metrica);
         }
     }
-    return 0; // Es buena práctica tener un return 0 al final de main si no hubo errores
+    return 0; 
 }

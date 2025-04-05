@@ -11,11 +11,10 @@ void load_csv(const char *filename) {
     }
 
     char line[MAX_LINE];
-    fgets(line, MAX_LINE, file); // Saltar encabezado
+    fgets(line, MAX_LINE, file); 
 
     while (fgets(line, MAX_LINE, file) && order_count < MAX_ORDERS) {
-        printf("Línea leída: %s", line); // Imprime la línea leída
-
+        printf("Línea leída: %s", line);
         char *token;
 
         token = strtok(line, ",");
@@ -65,7 +64,7 @@ void load_csv(const char *filename) {
         strncpy(orders[order_count].pizza_category, token, sizeof(orders[order_count].pizza_category) - 1);
         orders[order_count].pizza_category[sizeof(orders[order_count].pizza_category) - 1] = '\0';
 
-        // Manejar la cadena entre comillas dobles
+ 
         token = strtok(NULL, "\"");
         if (token == NULL) continue;
         strncpy(orders[order_count].pizza_ingredients, token, sizeof(orders[order_count].pizza_ingredients) - 1);
@@ -83,7 +82,7 @@ void load_csv(const char *filename) {
     printf("Se cerro el bucle \n");
 }
 
-// Función para encontrar la pizza más vendida
+
 void pms() {
     char best_seller[50];
     int max_quantity = 0;
@@ -96,7 +95,7 @@ void pms() {
     printf("Pizza más vendida: %s con %d unidades\n", best_seller, max_quantity);
 }
 
-// Función para encontrar la pizza menos vendida
+
 void pls() {
     char worst_seller[50];
     int min_quantity = INT_MAX;
@@ -109,30 +108,82 @@ void pls() {
     printf("Pizza menos vendida: %s con %d unidades\n", worst_seller, min_quantity);
 }
 
-// Función para encontrar la fecha con más ventas en términos de dinero
+
 void dms() {
-    char best_day[20];
-    float max_sales = 0;
+    typedef struct {
+        char fecha[20];
+        float total;
+    } FechaVenta;
+
+    FechaVenta fechas[MAX_ORDERS];
+    int fechas_count = 0;
+
     for (int i = 0; i < order_count; i++) {
-        if (orders[i].total_price > max_sales) {
-            max_sales = orders[i].total_price;
-            strcpy(best_day, orders[i].order_date);
+        int found = 0;
+        for (int j = 0; j < fechas_count; j++) {
+            if (strcmp(orders[i].order_date, fechas[j].fecha) == 0) {
+                fechas[j].total += orders[i].total_price;
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            strcpy(fechas[fechas_count].fecha, orders[i].order_date);
+            fechas[fechas_count].total = orders[i].total_price;
+            fechas_count++;
         }
     }
-    printf("Fecha con más ventas en dinero: %s con $%.2f\n", best_day, max_sales);
+
+    float max_total = 0;
+    char mejor_fecha[20];
+
+    for (int i = 0; i < fechas_count; i++) {
+        if (fechas[i].total > max_total) {
+            max_total = fechas[i].total;
+            strcpy(mejor_fecha, fechas[i].fecha);
+        }
+    }
+
+    printf("Fecha con más ventas en dinero: %s con un total de $%.2f\n", mejor_fecha, max_total);
 }
 
-// Función para encontrar la fecha con menos ventas en términos de dinero
+
 void dls() {
-    char worst_day[20];
-    float min_sales = INT_MAX;
+    typedef struct {
+        char fecha[20];
+        float total;
+    } FechaVenta;
+
+    FechaVenta fechas[MAX_ORDERS];
+    int fechas_count = 0;
+
     for (int i = 0; i < order_count; i++) {
-        if (orders[i].total_price < min_sales) {
-            min_sales = orders[i].total_price;
-            strcpy(worst_day, orders[i].order_date);
+        int found = 0;
+        for (int j = 0; j < fechas_count; j++) {
+            if (strcmp(orders[i].order_date, fechas[j].fecha) == 0) {
+                fechas[j].total += orders[i].total_price;
+                found = 1;
+                break;
+            }
+        }
+        if (!found) {
+            strcpy(fechas[fechas_count].fecha, orders[i].order_date);
+            fechas[fechas_count].total = orders[i].total_price;
+            fechas_count++;
         }
     }
-    printf("Fecha con menos ventas en dinero: %s con $%.2f\n", worst_day, min_sales);
+
+    float min_total = INT_MAX;
+    char peor_fecha[20];
+
+    for (int i = 0; i < fechas_count; i++) {
+        if (fechas[i].total < min_total) {
+            min_total = fechas[i].total;
+            strcpy(peor_fecha, fechas[i].fecha);
+        }
+    }
+
+    printf("Fecha con menos ventas en dinero: %s con un total de $%.2f\n", peor_fecha, min_total);
 }
 
 // Función para encontrar la fecha con más ventas en términos de cantidad de pizzas
@@ -235,7 +286,6 @@ void ims() {
         strcpy(ingredients, orders[i].pizza_ingredients);
         char *ingredient = strtok(ingredients, ",");
         while (ingredient != NULL) {
-            // Trim leading/trailing spaces
             while (*ingredient == ' ') ingredient++;
             char *end = ingredient + strlen(ingredient) - 1;
             while (end > ingredient && *end == ' ') end--;
